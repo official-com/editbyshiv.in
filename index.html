@@ -1011,50 +1011,311 @@
         </div>
     </section>
 
-    <!-- PORTFOLIO -->
-    <section class="section" id="work">
+    <!-- ============================================== -->
+    <!-- VIDEO SHOWCASE - SELECTED WORK                  -->
+    <!-- To change any video: replace the YouTube URL    -->
+    <!-- in the "src" of the <iframe>.                   -->
+    <!-- Format: https://www.youtube.com/embed/VIDEO_ID  -->
+    <!-- ============================================== -->
+
+    <style>
+        /* --- VIDEO SHOWCASE STYLES --- */
+        .video-showcase { padding: 100px 48px; }
+
+        .video-row { margin-bottom: 64px; }
+        .video-row:last-child { margin-bottom: 0; }
+
+        .video-row-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #00A19B;
+            margin-bottom: 24px;
+            padding: 8px 20px;
+            background: rgba(0, 161, 155, 0.08);
+            border: 1px solid rgba(0, 161, 155, 0.15);
+            border-radius: 999px;
+        }
+        .video-row-label .label-dot {
+            width: 8px; height: 8px;
+            background: #00A19B;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0, 161, 155, 0.6);
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.7); }
+        }
+
+        /* --- SHORTS ROW (vertical 9:16) --- */
+        .video-grid-shorts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .video-card-short {
+            position: relative;
+            background: rgba(228, 221, 211, 0.03);
+            border: 1px solid rgba(228, 221, 211, 0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(.16, 1, .3, 1);
+        }
+        .video-card-short:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 161, 155, 0.35);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 161, 155, 0.08);
+        }
+        .video-card-short .video-embed {
+            position: relative;
+            width: 100%;
+            padding-top: 177.78%; /* 9:16 aspect ratio */
+        }
+        .video-card-short .video-embed iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+            border-radius: 20px 20px 0 0;
+        }
+        .video-card-short .video-label {
+            padding: 14px 16px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #E4DDD3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .video-card-short .video-label .yt-badge {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #00A19B;
+            background: rgba(0, 161, 155, 0.1);
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 161, 155, 0.2);
+        }
+
+        /* --- LONG VIDEOS ROW (horizontal 16:9) --- */
+        .video-grid-long {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .video-card-long {
+            position: relative;
+            background: rgba(228, 221, 211, 0.03);
+            border: 1px solid rgba(228, 221, 211, 0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(.16, 1, .3, 1);
+        }
+        .video-card-long:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 161, 155, 0.35);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 161, 155, 0.1);
+        }
+        .video-card-long .video-embed {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+        }
+        .video-card-long .video-embed iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+            border-radius: 20px 20px 0 0;
+        }
+        .video-card-long .video-info {
+            padding: 20px;
+        }
+        .video-card-long .video-info h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #E4DDD3;
+            margin-bottom: 6px;
+        }
+        .video-card-long .video-info p {
+            font-size: 13px;
+            color: rgba(228, 221, 211, 0.4);
+            line-height: 1.5;
+        }
+        .video-card-long .video-info .yt-badge-long {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.08);
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 68, 68, 0.15);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .video-showcase { padding: 60px 24px; }
+            .video-grid-shorts { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .video-grid-long { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .video-grid-shorts { grid-template-columns: 1fr 1fr; gap: 12px; }
+        }
+    </style>
+
+    <section class="video-showcase" id="work">
         <div class="section-head">
             <h2 class="reveal">Selected Work</h2>
             <p class="reveal">A curated showcase of cinematic craft and motion design.</p>
         </div>
-        <div class="port-grid">
-            <div class="port-card reveal">
-                <div class="port-thumb">
-                    <!-- CHANGE IMAGE: Portfolio Card 1 Thumbnail - replace src -->
-                    <img src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149232879/original/ad93dc7ee6e6ef6e9b24c50fae2dbeb600be50e1/do-professional-video-editing-fast-and-high-quality.jpg"
-                        alt="Portfolio 1">
-                    <span class="port-tag">Commercial</span>
-                </div>
-                <div class="port-info">
-                    <h3>Neon Nights Campaign</h3>
-                    <p>High-energy product launch film with stylized motion graphics and color grading.</p>
-                </div>
+
+        <!-- ======================== -->
+        <!-- ROW 1: SHORT-FORM VIDEOS -->
+        <!-- ======================== -->
+        <div class="video-row">
+            <div class="video-row-label reveal">
+                <span class="label-dot"></span> Short-Form Edits
             </div>
-            <div class="port-card reveal">
-                <div class="port-thumb">
-                    <!-- CHANGE IMAGE: Portfolio Card 2 Thumbnail - replace src -->
-                    <img src="ChatGPT Image May 6, 2026, 03_26_46 PM.png" alt="Portfolio 2">
-                    <span class="port-tag">YouTube</span>
+            <div class="video-grid-shorts">
+
+                <!-- SHORT VIDEO 1 — Change the YouTube URL below -->
+                <div class="video-card-short reveal">
+                    <div class="video-embed">
+                        <iframe
+                            src="https://www.youtube.com/embed/w7Neg4GxSWw"
+                            title="Short Video 1"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-label">
+                        <span>Reel Edit</span>
+                        <span class="yt-badge">Short</span>
+                    </div>
                 </div>
-                <div class="port-info">
-                    <h3>Creator Spotlight Series</h3>
-                    <p>Retention-optimized storytelling for top-tier YouTube creators.</p>
+
+                <!-- SHORT VIDEO 2 — Change the YouTube URL below -->
+                <div class="video-card-short reveal">
+                    <div class="video-embed">
+                        <iframe
+                            src="https://www.youtube.com/embed/w7Neg4GxSWw"
+                            title="Short Video 2"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-label">
+                        <span>TikTok Edit</span>
+                        <span class="yt-badge">Short</span>
+                    </div>
                 </div>
+
+                <!-- SHORT VIDEO 3 — Change the YouTube URL below -->
+                <div class="video-card-short reveal">
+                    <div class="video-embed">
+                        <iframe
+                            src="https://www.youtube.com/embed/w7Neg4GxSWw"
+                            title="Short Video 3"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-label">
+                        <span>Shorts Edit</span>
+                        <span class="yt-badge">Short</span>
+                    </div>
+                </div>
+
+                <!-- SHORT VIDEO 4 — Change the YouTube URL below -->
+                <div class="video-card-short reveal">
+                    <div class="video-embed">
+                        <iframe
+                            src="https://www.youtube.com/embed/w7Neg4GxSWw"
+                            title="Short Video 4"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-label">
+                        <span>Promo Reel</span>
+                        <span class="yt-badge">Short</span>
+                    </div>
+                </div>
+
             </div>
-            <div class="port-card reveal">
-                <div class="port-thumb">
-                    <!-- CHANGE IMAGE: Portfolio Card 3 Thumbnail - replace src -->
-                    <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80"
-                        alt="Portfolio 3">
-                    <span class="port-tag">Brand Film</span>
+        </div>
+
+        <!-- ======================== -->
+        <!-- ROW 2: LONG-FORM VIDEOS  -->
+        <!-- ======================== -->
+        <div class="video-row">
+            <div class="video-row-label reveal">
+                <span class="label-dot"></span> Long-Form Edits
+            </div>
+            <div class="video-grid-long">
+
+                <!-- LONG VIDEO 1 — Change the YouTube URL below -->
+                <div class="video-card-long reveal">
+                    <div class="video-embed">
+                        <iframe
+                            src="https://www.youtube.com/embed/w7Neg4GxSWw"
+                            title="Long Video 1"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>YouTube Documentary</h3>
+                        <p>Cinematic long-form storytelling with dynamic pacing and sound design.</p>
+                        <span class="yt-badge-long">YouTube</span>
+                    </div>
                 </div>
-                <div class="port-info">
-                    <h3>Luxury Automotive</h3>
-                    <p>Sleek, rhythmic editing for premium automotive brand campaigns.</p>
+
+                <!-- LONG VIDEO 2 — Change the YouTube URL below -->
+                <div class="video-card-long reveal">
+                    <div class="video-embed">
+                        <iframe
+                            src="https://www.youtube.com/embed/w7Neg4GxSWw"
+                            title="Long Video 2"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Brand Campaign Film</h3>
+                        <p>Premium commercial edit with color grading and visual storytelling.</p>
+                        <span class="yt-badge-long">YouTube</span>
+                    </div>
                 </div>
+
+                <!-- LONG VIDEO 3 — Change the YouTube URL below -->
+                <div class="video-card-long reveal">
+                    <div class="video-embed">
+                        <iframe
+                            src="https://www.youtube.com/embed/w7Neg4GxSWw"
+                            title="Long Video 3"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Creator Series Edit</h3>
+                        <p>Retention-optimized editing for top-tier YouTube creators.</p>
+                        <span class="yt-badge-long">YouTube</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
+
 
     <!-- SERVICES -->
     <section class="section" id="services" style="background:rgba(228,221,211,0.01)">
@@ -1066,26 +1327,30 @@
             <div class="srv-card reveal">
                 <div class="srv-icon">
                     <!-- CHANGE IMAGE: Service Icon 1 (Short-Form Edits) - replace src -->
-                    <img src="https://static.vecteezy.com/system/resources/thumbnails/023/608/676/small/movie-film-frame-png.png"
-                        alt="Short-Form Edits" style="width: 72px; height: 72px; object-fit: contain;">
-                </div>
+                    <a href="https://youtu.be/w7Neg4GxSWw?si=WvJlKNDIfjlTi5mS"> <img
+                            src="https://static.vecteezy.com/system/resources/thumbnails/023/608/676/small/movie-film-frame-png.png"
+                            alt="Short-Form Edits" style="width: 72px; height: 72px; object-fit: contain;">
+                </div></a>
                 <h4>Short-Form Edits</h4>
                 <p>High-impact vertical content designed for maximum retention on TikTok, Reels, and Shorts.</p>
             </div>
             <div class="srv-card reveal">
                 <div class="srv-icon">
                     <!-- CHANGE IMAGE: Service Icon 2 (YouTube Editing) - replace src -->
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Youtube_shorts_icon.svg/250px-Youtube_shorts_icon.svg.png"
-                        alt="YouTube Editing" style="width: 60px; height: 60px; object-fit: contain;">
-                </div>
+                    <a href=""> <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Youtube_shorts_icon.svg/250px-Youtube_shorts_icon.svg.png"
+                            alt="YouTube Editing" style="width: 60px; height: 60px; object-fit: contain;">
+                </div></a>
                 <h4>YouTube Editing</h4>
                 <p>Engaging long-form edits with dynamic pacing, sound design, and narrative flow.</p>
             </div>
             <div class="srv-card reveal">
                 <div class="srv-icon">
                     <!-- CHANGE IMAGE: Service Icon 3 (Motion Graphics) - replace src -->
-                    <img src="https://static.vecteezy.com/system/resources/thumbnails/073/495/223/small/after-effects-logo-glossy-circle-icon-with-transparent-background-free-png.png"
-                        alt="Motion Graphics" style="width: 60px; height: 60px; object-fit: contain;">
+                    <a href="https://youtu.be/w7Neg4GxSWw?si=WvJlKNDIfjlTi5mS"><img
+                            src="https://static.vecteezy.com/system/resources/thumbnails/073/495/223/small/after-effects-logo-glossy-circle-icon-with-transparent-background-free-png.png"
+                            alt="Motion Graphics" style="width: 60px; height: 60px; object-fit: contain;">
+                    </a>
                 </div>
                 <h4>Motion Graphics</h4>
                 <p>Custom titles, lower thirds, transitions, and animated visual elements.</p>
@@ -1093,8 +1358,10 @@
             <div class="srv-card reveal">
                 <div class="srv-icon">
                     <!-- CHANGE IMAGE: Service Icon 4 (Commercial Edits) - replace src -->
-                    <img src="https://png.pngtree.com/element_pic/16/11/18/4f829e85866bd52d062ca58b4e1ecef5.png"
-                        alt="Commercial Edits" style="width: 62px; height: 62px; object-fit: contain;">
+                    <a href="https://youtu.be/w7Neg4GxSWw?si=WvJlKNDIfjlTi5mS"><img
+                            src="https://png.pngtree.com/element_pic/16/11/18/4f829e85866bd52d062ca58b4e1ecef5.png"
+                            alt="Commercial Edits" style="width: 62px; height: 62px; object-fit: contain;">
+                    </a>
                 </div>
                 <h4>Commercial Edits</h4>
                 <p>Cinematic color grading, premium cuts, and visual storytelling for brands.</p>
@@ -1102,8 +1369,10 @@
             <div class="srv-card reveal">
                 <div class="srv-icon">
                     <!-- CHANGE IMAGE: Service Icon 5 (Brand Storytelling) - replace src -->
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/DaVinci_Resolve_Studio.png"
-                        alt="Brand Storytelling" style="width: 62px; height: 62px; object-fit: contain;">
+                    <a href="https://youtu.be/w7Neg4GxSWw?si=WvJlKNDIfjlTi5mS"><img
+                            src="https://upload.wikimedia.org/wikipedia/commons/4/4d/DaVinci_Resolve_Studio.png"
+                            alt="Brand Storytelling" style="width: 62px; height: 62px; object-fit: contain;">
+                    </a>
                 </div>
                 <h4>Brand Storytelling</h4>
                 <p>Narrative-driven content that communicates brand identity and connects with audiences.</p>
@@ -1111,7 +1380,7 @@
         </div>
     </section>
 
-      <!-- STATS -->
+    <!-- STATS -->
     <div class="stats-section">
         <div class="stats-grid">
             <div class="reveal">
@@ -1140,7 +1409,7 @@
                 <!-- CHANGE IMAGE: About Section Photo - replace src to change about photo -->
                 <div class="about-photo reveal"><img src="Screenshot 2026-05-06 153450.png" alt="Shiva"></div>
                 <div class="about-text">
-                    <h3 class="reveal">About Shiv</h3>
+                    <h3 class="reveal">About Shiva</h3>
                     <p class="reveal">A professional video editor and creative designer trusted by 50+ clients
                         worldwide. Shiva
                         specializes in cinematic storytelling, premium motion design, and refined visual craft that
